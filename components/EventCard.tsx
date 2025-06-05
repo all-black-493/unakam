@@ -1,0 +1,176 @@
+import React from 'react';
+import { Calendar, Clock, MapPin, User, Ticket, TrendingUp } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { useRouter } from 'next/navigation';
+
+interface EventCardProps {
+  id: number;  
+  category: string;
+  title: string;
+  date: string;
+  time: string;
+  location: string;
+  organizer: string;
+  description: string;
+  imageUrl: string;
+  vipTickets: number;
+  isTrending: boolean;
+  ticketsSold: number;
+  ticketsRemaining: number;
+  price: number;
+  vipPrice: number;
+}
+
+const EventCard: React.FC<EventCardProps> = ({
+  id,
+  category,
+  title,
+  date,
+  time,
+  location,
+  organizer,
+  description,
+  imageUrl,
+  vipTickets,
+  isTrending,
+  ticketsSold,
+  ticketsRemaining,
+  price,
+  vipPrice
+}) => {
+  const router = useRouter();
+  const totalTickets = ticketsSold + ticketsRemaining;
+  const soldPercentage = (ticketsSold / totalTickets) * 100;
+
+  const handleViewDetails = () => {
+  console.log('View Details clicked for event ID:', id); // Check if ID is correct
+  console.log('Attempting to navigate to:', `/details/${id}`);
+  
+  try {
+    router.push(`/details/${id}`);
+  } catch (error) {
+    console.error('Navigation error:', error);
+  }
+};
+
+  return (
+    <Card className="group relative overflow-hidden bg-white dark:bg-gray-800 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 max-w-md mx-auto neon-border">
+      {/* Trending Badge */}
+      {isTrending && (
+        <div className="absolute top-4 right-4 z-20">
+          <Badge className="bg-gradient-to-r from-red-500 to-pink-500 text-white px-3 py-1 rounded-full flex items-center gap-1 animate-pulse">
+            <TrendingUp className="w-3 h-3" />
+            Trending
+          </Badge>
+        </div>
+      )}
+
+      {/* Event Image */}
+      <div className="relative h-48 overflow-hidden">
+        <img 
+          src={imageUrl} 
+          alt={title}
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+        
+        {/* Category Badge */}
+        <div className="absolute bottom-4 left-4">
+          <Badge variant="secondary" className="bg-white/90 dark:bg-gray-800/90 text-gray-800 dark:text-gray-200 font-medium">
+            {category}
+          </Badge>
+        </div>
+      </div>
+
+      {/* Card Content */}
+      <div className="p-6 space-y-4">
+        {/* Event Title */}
+        <h3 className="text-xl font-bold text-gray-900 dark:text-white line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+          {title}
+        </h3>
+
+        {/* Event Details */}
+        <div className="space-y-3">
+          <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
+            <Calendar className="w-4 h-4 text-blue-500" />
+            <span className="text-sm font-medium">{date}</span>
+          </div>
+          
+          <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
+            <Clock className="w-4 h-4 text-green-500" />
+            <span className="text-sm font-medium">{time}</span>
+          </div>
+          
+          <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
+            <MapPin className="w-4 h-4 text-red-500" />
+            <span className="text-sm font-medium">{location}</span>
+          </div>
+          
+          <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
+            <User className="w-4 h-4 text-purple-500" />
+            <span className="text-sm font-medium">{organizer}</span>
+          </div>
+        </div>
+
+        {/* Description */}
+        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed line-clamp-3">
+          {description}
+        </p>
+
+        {/* Ticket Information */}
+        <div className="space-y-3 pt-4 border-t border-gray-100 dark:border-gray-700">
+          {/* VIP Tickets */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Ticket className="w-4 h-4 text-yellow-500" />
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">VIP Tickets</span>
+            </div>
+            <Badge variant="outline" className="bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 border-yellow-200 dark:border-yellow-800">
+              {vipTickets} available
+            </Badge>
+          </div>
+
+          {/* Tickets Progress */}
+          <div className="space-y-2">
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-600 dark:text-gray-400">Tickets Sold</span>
+              <span className="font-medium text-gray-900 dark:text-white">{ticketsSold} / {totalTickets}</span>
+            </div>
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+              <div 
+                className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-700 ease-out"
+                style={{ width: `${soldPercentage}%` }}
+              />
+            </div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">
+              {ticketsRemaining} tickets remaining
+            </div>
+          </div>
+        </div>
+
+        {/* Pricing */}
+        <div className="flex justify-between items-center pt-4 border-t border-gray-100 dark:border-gray-700">
+          <div className="space-y-1">
+            <div className="text-sm text-gray-600 dark:text-gray-400">Regular</div>
+            <div className="text-lg font-bold text-gray-900 dark:text-white">${price}</div>
+          </div>
+          <div className="space-y-1 text-right">
+            <div className="text-sm text-gray-600 dark:text-gray-400">VIP</div>
+            <div className="text-lg font-bold text-yellow-600 dark:text-yellow-400">${vipPrice}</div>
+          </div>
+        </div>
+
+        {/* Action Button */}
+        <button 
+          onClick={handleViewDetails}
+          className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+        >
+          View Event Details
+        </button>
+      </div>
+    </Card>
+  );
+};
+
+export default EventCard;
