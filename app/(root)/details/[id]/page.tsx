@@ -6,7 +6,6 @@ import { Calendar, Clock, MapPin, User, Ticket, ArrowLeft, Plus, Minus, Shopping
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ThemeToggle } from '@/components/ThemeToggle';
 import { toast } from "sonner"
 
 const EventDetails = () => {
@@ -135,7 +134,6 @@ const EventDetails = () => {
             <ArrowLeft className="w-4 h-4" />
             Back to Events
           </Button>
-          <ThemeToggle />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

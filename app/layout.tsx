@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from 'next-themes'
 import { Toaster } from "@/components/ui/sonner"
-import { Oxanium } from 'next/font/google'
+import { Oxanium } from 'next/font/google'  // Using built-in next/font
 import "./globals.css";
 
 const oxanium = Oxanium({
@@ -22,11 +22,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${oxanium.variable}`}>
-      <body className="font-sans">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+    <html lang="en" suppressHydrationWarning >
+      <body>
+        <ThemeProvider attribute="class">
           {children}
-          <Toaster richColors expand={true} />
+          <Toaster
+            richColors
+            expand={true}
+            toastOptions={{
+              //There are two styles for double-protection
+              className: "font-[--font-oxanium]",
+              style: {
+                fontFamily: 'var(--font-oxanium)',
+              },
+            }}
+          />
         </ThemeProvider>
       </body>
     </html>
