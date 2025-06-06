@@ -39,7 +39,7 @@ export function AppSidebar() {
 
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader className="p-4">
+      <SidebarHeader className="p-1">
         <Logo />
       </SidebarHeader>
       

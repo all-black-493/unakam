@@ -14,6 +14,10 @@ const oxanium = Oxanium({
 export const metadata: Metadata = {
   title: "Unakam?",
   description: "An Events Application",
+  icons: {
+    icon: "/favicon.ico",
+    
+  },
 };
 
 export default function RootLayout({
