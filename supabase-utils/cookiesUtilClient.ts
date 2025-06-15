@@ -17,9 +17,6 @@ export const getSupabaseCookiesUtilClient = async () => {
                     console.error("Error setting cookies:", error);
                 }
             },
-            removeAll(){
-                cookieStore.getAll().forEach(cookie => cookieStore.delete(cookie.name));
-            }
         } }
     );
 };

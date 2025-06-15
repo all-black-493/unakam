@@ -29,20 +29,43 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
-import { Profile } from "./Profile"
-import { Logo } from "./Logo"
+import { NavUser } from "@/components/nav-user"
+import { TeamSwitcher } from "./TeamSwitcher";
+import { getSupabaseBrowserClient } from "@/supabase-utils/browserClient";
+import { useEffect } from "react";
+import { useRouter } from 'next/navigation';
+
+const data = {
+  user: {
+    name: "shadcn",
+    email: "m@example.com",
+    avatar: "/avatars/shadcn.jpg",
+  }
+}
 
 export function AppSidebar() {
   const [eventsOpen, setEventsOpen] = useState(false)
   const [discoverOpen, setDiscoverOpen] = useState(false)
   const [connectOpen, setConnectOpen] = useState(false)
+  const supabase = getSupabaseBrowserClient();
+  const router = useRouter();
+  useEffect(() => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_OUT") {
+        router.push("/sign-in");
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, []);
 
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="p-1">
-        <Logo />
+        <TeamSwitcher />
       </SidebarHeader>
-      
+
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Navigation</SidebarGroupLabel>
@@ -50,7 +73,7 @@ export function AppSidebar() {
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <a href="/">
+                  <a href="/events">
                     <Home />
                     <span>Home</span>
                   </a>
@@ -121,7 +144,7 @@ export function AppSidebar() {
 
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <a href="/my-tickets">
+                  <a href="/tickets">
                     <Ticket />
                     <span>My Tickets</span>
                   </a>
@@ -159,8 +182,10 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter className="p-4">
-        <Profile />
+        <NavUser user={data.user} />
       </SidebarFooter>
     </Sidebar>
   )
+
+
 }

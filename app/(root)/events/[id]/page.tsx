@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { toast } from "sonner"
+import PaymentMethodSelection from '@/components/PaymentMethodModal';
 
 const EventDetails = () => {
   const params = useParams();
@@ -15,6 +16,7 @@ const EventDetails = () => {
 
   const [regularTickets, setRegularTickets] = useState(0);
   const [vipTickets, setVipTickets] = useState(0);
+  const [showPaymentSelection, setShowPaymentSelection] = useState(false);
 
   const events = [
     {
@@ -187,7 +189,7 @@ const EventDetails = () => {
     }
   };
 
-  const handlePurchase = () => {
+  const handleSelectTickets = () => {
     if (totalTickets === 0) {
       toast.warning("No tickets selected", {
         description: "Please select at least one ticket to proceed.",
@@ -195,12 +197,27 @@ const EventDetails = () => {
       return;
     }
 
-    toast.success("Purchase Successful!", {
-      description: `You have successfully purchased ${totalTickets} ticket(s) for $${totalPrice}. Confirmation email will be sent shortly.`,
-    });
+    setShowPaymentSelection(true);
+  };
 
-    setRegularTickets(0);
-    setVipTickets(0);
+  const handlePaymentMethod = (method: 'stripe' | 'mpesa') => {
+    toast.success('Payment Method Selected', {
+      description: `Proceeding with ${method === 'stripe' ? 'Credit Card Payment' : 'M-PESA STK Push'} for $${totalPrice}`,
+    });
+    setShowPaymentSelection(false);
+    // Integrate with the actual payment processing
+  };
+
+  if (showPaymentSelection) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center p-4">
+        <PaymentMethodSelection
+          totalAmount={totalPrice}
+          onMethodSelected={handlePaymentMethod}
+          onCancel={() => setShowPaymentSelection(false)}
+        />
+      </div>
+    );
   };
 
   return (
@@ -367,12 +384,12 @@ const EventDetails = () => {
 
               {/* Purchase Button */}
               <Button
-                onClick={handlePurchase}
+                onClick={handleSelectTickets}
                 className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300"
                 disabled={totalTickets === 0}
               >
                 <ShoppingCart className="w-4 h-4 mr-2" />
-                {totalTickets === 0 ? 'Select Tickets' : `Purchase ${totalTickets} Ticket${totalTickets > 1 ? 's' : ''}`}
+                {totalTickets === 0 ? 'Select Tickets' : `Select Payment Method`}
               </Button>
 
               {/* Ticket Info */}
