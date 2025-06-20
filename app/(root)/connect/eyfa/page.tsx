@@ -1,73 +1,109 @@
-'use client'
+"use client";
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Calendar, Users, TrendingUp, Star, Award, Target } from 'lucide-react';
+import { Users, TrendingUp, Star, Award, Target, UserPlus, MessageCircle, Share2, Heart } from 'lucide-react';
 
 const EYFA = () => {
   const yourStats = {
     eventsAttended: 24,
     friendsConnected: 12,
     reviewsWritten: 8,
-    favoritesAdded: 15
+    friendsAtEvents: 15
   };
 
   const friendsActivity = [
     {
       id: 1,
       friend: "Alex Johnson",
-      action: "attended",
+      action: "is going to",
       event: "Tech Innovation Summit",
-      date: "2 days ago",
-      rating: 5
+      date: "July 20, 2024",
+      rating: 5,
+      mutualFriends: 3,
+      eventStatus: "upcoming"
     },
     {
       id: 2,
       friend: "Sarah Chen",
-      action: "reviewed",
+      action: "attended",
       event: "Art Gallery Opening",
-      date: "1 week ago",
-      rating: 4
+      date: "July 10, 2024",
+      rating: 4,
+      mutualFriends: 2,
+      eventStatus: "past"
     },
     {
       id: 3,
       friend: "Mike Rodriguez",
-      action: "saved",
+      action: "is interested in",
       event: "Startup Pitch Night",
-      date: "3 days ago",
-      rating: null
+      date: "July 25, 2024",
+      rating: null,
+      mutualFriends: 5,
+      eventStatus: "upcoming"
+    },
+    {
+      id: 4,
+      friend: "Emma Wilson",
+      action: "is going to",
+      event: "Photography Workshop",
+      date: "July 18, 2024",
+      rating: null,
+      mutualFriends: 1,
+      eventStatus: "upcoming"
     }
   ];
 
   const achievements = [
     {
       id: 1,
-      title: "Event Explorer",
-      description: "Attended 20+ events",
-      icon: Calendar,
-      earned: true
-    },
-    {
-      id: 2,
-      title: "Social Butterfly",
-      description: "Connected with 10+ friends",
+      title: "Social Explorer",
+      description: "Attended events with 10+ friends",
       icon: Users,
       earned: true
     },
     {
+      id: 2,
+      title: "Event Connector",
+      description: "Introduced 5+ friends to events",
+      icon: UserPlus,
+      earned: true
+    },
+    {
       id: 3,
-      title: "Trendsetter",
-      description: "Attended 5 trending events",
+      title: "Community Builder",
+      description: "Organized group event attendance",
       icon: TrendingUp,
       earned: false
     },
     {
       id: 4,
-      title: "Event Critic",
-      description: "Written 10+ reviews",
-      icon: Star,
+      title: "Event Influencer",
+      description: "Friends joined 10+ events you shared",
+      icon: Share2,
       earned: false
+    }
+  ];
+
+  const suggestedEvents = [
+    {
+      id: 1,
+      title: "Summer Music Festival",
+      date: "July 22, 2024",
+      friendsGoing: ["Alex Johnson", "Emma Wilson", "David Kim"],
+      category: "Music",
+      price: 75
+    },
+    {
+      id: 2,
+      title: "Developer Meetup",
+      date: "July 30, 2024",
+      friendsGoing: ["Sarah Chen", "Mike Rodriguez"],
+      category: "Technology",
+      price: 0
     }
   ];
 
@@ -76,21 +112,21 @@ const EYFA = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-            EYFA - Events You've Followed & Attended
+            EYFA - Events Your Friends also Attend
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-300">
-            Track your event journey and see what your friends are up to
+            Discover events through your social network and see what your friends are attending
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Your Stats */}
+          {/* Your Social Stats */}
           <div className="lg:col-span-1">
             <Card className="mb-6">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Target className="w-5 h-5" />
-                  Your Stats
+                  Your Social Stats
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -108,19 +144,19 @@ const EYFA = () => {
                     <p className="text-sm text-muted-foreground">Reviews Written</p>
                   </div>
                   <div className="text-center p-3 bg-muted/50 rounded-lg">
-                    <p className="text-2xl font-bold text-primary">{yourStats.favoritesAdded}</p>
-                    <p className="text-sm text-muted-foreground">Favorites Added</p>
+                    <p className="text-2xl font-bold text-primary">{yourStats.friendsAtEvents}</p>
+                    <p className="text-sm text-muted-foreground">Friends at Events</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Achievements */}
+            {/* Social Achievements */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Award className="w-5 h-5" />
-                  Achievements
+                  Social Achievements
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -156,11 +192,15 @@ const EYFA = () => {
             </Card>
           </div>
 
-          {/* Friends Activity */}
+          {/* Friends Activity & Suggested Events */}
           <div className="lg:col-span-2">
-            <Card>
+            {/* Friends Activity */}
+            <Card className="mb-6">
               <CardHeader>
-                <CardTitle>Friends Activity</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <Users className="w-5 h-5" />
+                  Friends Activity
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -178,7 +218,18 @@ const EYFA = () => {
                             <p className="text-sm">
                               <strong>{activity.friend}</strong> {activity.action} <strong>{activity.event}</strong>
                             </p>
-                            <p className="text-xs text-muted-foreground">{activity.date}</p>
+                            <div className="flex items-center gap-2 mt-1">
+                              <p className="text-xs text-muted-foreground">{activity.date}</p>
+                              <Badge variant="outline" className="text-xs">
+                                {activity.mutualFriends} mutual friends
+                              </Badge>
+                              <Badge 
+                                variant={activity.eventStatus === 'upcoming' ? 'default' : 'secondary'} 
+                                className="text-xs"
+                              >
+                                {activity.eventStatus}
+                              </Badge>
+                            </div>
                           </div>
                           {activity.rating && (
                             <div className="flex items-center gap-1">
@@ -198,11 +249,16 @@ const EYFA = () => {
                           <Button variant="outline" size="sm" className="text-xs">
                             View Event
                           </Button>
-                          {activity.action === 'reviewed' && (
+                          {activity.eventStatus === 'upcoming' && (
                             <Button variant="outline" size="sm" className="text-xs">
-                              Read Review
+                              <Heart className="w-3 h-3 mr-1" />
+                              Join Friend
                             </Button>
                           )}
+                          <Button variant="outline" size="sm" className="text-xs">
+                            <MessageCircle className="w-3 h-3 mr-1" />
+                            Message
+                          </Button>
                         </div>
                       </div>
                     </div>
@@ -215,49 +271,94 @@ const EYFA = () => {
               </CardContent>
             </Card>
 
-            {/* Recent Events */}
-            <Card className="mt-6">
+            {/* Suggested Events Based on Friends */}
+            <Card>
               <CardHeader>
-                <CardTitle>Your Recent Events</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <TrendingUp className="w-5 h-5" />
+                  Events Your Friends Are Attending
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="p-4 border rounded-lg">
-                    <div className="flex justify-between items-start mb-2">
-                      <h3 className="font-medium">Tech Innovation Summit</h3>
-                      <Badge variant="secondary">Attended</Badge>
+                  {suggestedEvents.map((event) => (
+                    <div key={event.id} className="p-4 border rounded-lg">
+                      <div className="flex justify-between items-start mb-2">
+                        <h3 className="font-medium">{event.title}</h3>
+                        <Badge variant="secondary">{event.category}</Badge>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-2">{event.date}</p>
+                      <div className="mb-3">
+                        <p className="text-xs text-muted-foreground mb-1">Friends going:</p>
+                        <div className="flex flex-wrap gap-1">
+                          {event.friendsGoing.map((friend, index) => (
+                            <Badge key={index} variant="outline" className="text-xs">
+                              {friend}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="font-semibold">
+                          {event.price === 0 ? 'Free' : `$${event.price}`}
+                        </span>
+                        <div className="flex gap-2">
+                          <Button size="sm" variant="outline" className="text-xs">
+                            <Share2 className="w-3 h-3 mr-1" />
+                            Share
+                          </Button>
+                          <Button size="sm" className="text-xs">
+                            Join Friends
+                          </Button>
+                        </div>
+                      </div>
                     </div>
-                    <p className="text-sm text-muted-foreground mb-2">June 15, 2024</p>
-                    <div className="flex items-center gap-1 mb-2">
-                      {[...Array(5)].map((_, i) => (
-                        <Star 
-                          key={i} 
-                          className={`w-3 h-3 ${i < 4 ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`} 
-                        />
-                      ))}
-                      <span className="text-xs text-muted-foreground ml-1">Your rating</span>
-                    </div>
-                    <Button variant="outline" size="sm" className="text-xs">
-                      Write Review
-                    </Button>
-                  </div>
-                  
-                  <div className="p-4 border rounded-lg">
-                    <div className="flex justify-between items-start mb-2">
-                      <h3 className="font-medium">Photography Workshop</h3>
-                      <Badge variant="outline">Saved</Badge>
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-2">June 20, 2024</p>
-                    <p className="text-xs text-muted-foreground mb-2">Upcoming event</p>
-                    <Button variant="outline" size="sm" className="text-xs">
-                      View Details
-                    </Button>
-                  </div>
+                  ))}
                 </div>
               </CardContent>
             </Card>
           </div>
         </div>
+
+        {/* User Experience Improvements */}
+        <Card className="mt-6">
+          <CardHeader>
+            <CardTitle>Enhance Your Experience</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                <h4 className="font-semibold mb-2">Connect More Friends</h4>
+                <p className="text-sm text-muted-foreground mb-3">
+                  The more friends you connect, the better event recommendations you'll get.
+                </p>
+                <Button size="sm" variant="outline">
+                  Find Friends
+                </Button>
+              </div>
+              
+              <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                <h4 className="font-semibold mb-2">Enable Notifications</h4>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Get notified when friends join events you might be interested in.
+                </p>
+                <Button size="sm" variant="outline">
+                  Settings
+                </Button>
+              </div>
+              
+              <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                <h4 className="font-semibold mb-2">Share Your Events</h4>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Let friends know about events you're attending to build your social circle.
+                </p>
+                <Button size="sm" variant="outline">
+                  Share Events
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

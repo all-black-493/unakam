@@ -15,6 +15,7 @@ export default function BreadcrumbNav(){
     const breadcrumbMap: Record<string, string> = {
         'event': 'Event Details',
         'events': 'Events',
+        'create': 'Create Event',
         'nearby': 'Nearby',
         'trending': 'Trending',
         'discover': 'Discover',
@@ -32,9 +33,6 @@ export default function BreadcrumbNav(){
     return (
         <Breadcrumb className="mb-4">
             <BreadcrumbList>
-                <BreadcrumbItem>
-                    <BreadcrumbLink href="/">Home</BreadcrumbLink>
-                </BreadcrumbItem>
                 {pathnames.map((path, index) => {
                     const routeTo = `/${pathnames.slice(0, index + 1).join('/')}`;
                     const isLast = index === pathnames.length - 1;

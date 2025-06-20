@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { getSupabaseBrowserClient } from '@/supabase-utils/browserClient';
+// import { getSupabaseBrowserClient } from '@/supabase-utils/browserClient';
 import { SigninForm } from '@/components/SignInForm';
 import { useSearchParams, useRouter } from 'next/navigation';
 
@@ -19,15 +19,15 @@ export default function SignInPage() {
     router.push(`?magicLink=${newMode ? 'no' : 'yes'}`, { scroll: false });
   };
 
-  useEffect(() => {
-    const supabase = getSupabaseBrowserClient();
-    supabase.storage.listBuckets().then(({ data, error }) => {
-      // console.log("Current login mode:", isPasswordLogin ? "Password" : "Magic Link");
-      if (error) {
-        console.error(error);
-      }
-    });
-  }, [isPasswordLogin]);
+  // useEffect(() => {
+  //   const supabase = getSupabaseBrowserClient();
+  //   // supabase.storage.listBuckets().then(({ data, error }) => {
+  //     // console.log("Current login mode:", isPasswordLogin ? "Password" : "Magic Link");
+  //     if (error) {
+  //       console.error(error);
+  //     }
+  //   });
+  // }, [isPasswordLogin]);
 
   return (
     <div>

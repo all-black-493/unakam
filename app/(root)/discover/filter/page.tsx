@@ -24,15 +24,15 @@ const FilterEvents = () => {
       date: "June 25, 2024",
       time: "7:00 PM - 11:00 PM",
       location: "Music Hall",
-      organizer: "Rock Events",
+      organizer_name: "Rock Events",
       description: "An electrifying night of rock music.",
-      imageUrl: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&h=300&fit=crop",
-      vipTickets: 30,
-      isTrending: true,
-      ticketsSold: 200,
-      ticketsRemaining: 50,
+      image_url: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&h=300&fit=crop",
+      vip_tickets: 30,
+      is_trending: true,
+      tickets_sold: 200,
+      tickets_remaining: 50,
       price: 55,
-      vipPrice: 95
+      vip_price: 95
     }
   ];
 

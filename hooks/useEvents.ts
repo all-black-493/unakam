@@ -1,9 +1,12 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Event, FilterEventsInput, BuyTicketInput } from '@/types/database';
 
+// Mock API functions (replace with actual API calls)
 const fetchEvents = async (filters?: FilterEventsInput): Promise<Event[]> => {
+  // Simulate API delay
   await new Promise(resolve => setTimeout(resolve, 500));
   
+  // Mock data - replace with actual API call
   const mockEvents: Event[] = [
     {
       id: 1,
@@ -13,7 +16,7 @@ const fetchEvents = async (filters?: FilterEventsInput): Promise<Event[]> => {
       date: "July 15, 2024",
       time: "7:00 PM - 11:00 PM",
       location: "Central Park, New York",
-      organizer: "Music Events Co.",
+      organizer_name: "Music Events Co.",
       organizer_id: "550e8400-e29b-41d4-a716-446655440001",
       description: "Join us for an unforgettable night of music featuring top artists from around the world.",
       image_url: "https://images.unsplash.com/photo-1500673922987-e212871fec22?w=400&h=300&fit=crop",
@@ -23,11 +26,13 @@ const fetchEvents = async (filters?: FilterEventsInput): Promise<Event[]> => {
       tickets_remaining: 150,
       price: 75,
       vip_price: 150,
+      status: 'published',
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     }
   ];
 
+  // Apply filters (simplified)
   let filteredEvents = mockEvents;
   if (filters?.search) {
     filteredEvents = filteredEvents.filter(event => 
@@ -44,6 +49,7 @@ const fetchEvents = async (filters?: FilterEventsInput): Promise<Event[]> => {
 };
 
 const buyTicket = async (ticketData: BuyTicketInput): Promise<{ success: boolean; ticketId: string }> => {
+  // Simulate API delay
   await new Promise(resolve => setTimeout(resolve, 1000));
   return { success: true, ticketId: crypto.randomUUID() };
 };

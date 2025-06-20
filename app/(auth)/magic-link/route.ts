@@ -38,27 +38,52 @@ export async function POST(request: Request) {
 
     const { hashed_token } = linkData.properties;
 
-    const constructedLink = new URL(
-        `/auth/verify?hashed_token=${hashed_token}&type=recovery`,
-        request.url
-    );
+    let type_value: "recovery" | null = null;
 
-    const transporter = nodemailer.createTransport({
-        host: "localhost",
-        port: 54334,
-    });
+    if (type_value === "recovery") {
+        const constructedLink = new URL(
+            `/verify?hashed_token=${hashed_token}&type=${type_value}`,
+            request.url
+        );
 
-    await transporter.sendMail({
-        from: "Example Company <example@mail.whatever>",
-        to: email,
-        subject: "Magic Link",
-        html: `
-            <h1>Hi there, this is a custom magic link email!</h1>
-            <p>Click <a href="${constructedLink.toString()}">here</a> to log in.</p>
-            <p>If you did not request this email, please ignore it.</p>
-            <p>Thank you!</p>
-        `,
-    });
+        const transporter = nodemailer.createTransport({
+            host: "localhost",
+            port: 54334,
+        });
+    
+        await transporter.sendMail({
+            from: "Example Company <example@mail.whatever>",
+            to: email,
+            subject: "Magic Link",
+            html: `
+                <h1>Hi there, this is a custom magic link email for ACCOUNT RECOVERY!</h1>
+                <p>Click <a href="${constructedLink.toString()}">here</a> to log in.</p>
+                <p>If you did not request this email, please ignore it.</p>
+                <p>Thank you!</p>
+            `,
+        });
+    }else{
+
+        const constructedLink = new URL(
+            `/verify?hashed_token=${hashed_token}`,
+            request.url
+        );
+        const transporter = nodemailer.createTransport({
+            host: "localhost",
+            port: 54334,
+        });
+        await transporter.sendMail({
+            from: "Example Company <example@mail.whatever>",
+            to: email,
+            subject: "Magic Link",
+            html: `
+                <h1>Hi there, this is a custom magic link email TO SIGN IN!</h1>
+                <p>Click <a href="${constructedLink.toString()}">here</a> to log in.</p>
+                <p>If you did not request this email, please ignore it.</p>
+                <p>Thank you!</p>
+            `,
+        });
+    }
 
     const thanksUrl = new URL("/magic-thanks", request.url);
 

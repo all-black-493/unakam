@@ -7,6 +7,7 @@ import {
   Search,
   Ticket,
   User,
+  Plus,
 } from "lucide-react"
 import { useState } from "react"
 import {
@@ -29,11 +30,19 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
+import { Badge } from "@/components/ui/badge"
 import { NavUser } from "@/components/nav-user"
 import { TeamSwitcher } from "./TeamSwitcher";
 import { getSupabaseBrowserClient } from "@/supabase-utils/browserClient";
 import { useEffect } from "react";
 import { useRouter } from 'next/navigation';
+
+const mockUser = {
+  name: "John Doe",
+  email: "john@example.com",
+  avatar: "https://github.com/shadcn.png",
+  organizer_status: "approved" as const,
+}
 
 const data = {
   user: {
@@ -49,6 +58,8 @@ export function AppSidebar() {
   const [connectOpen, setConnectOpen] = useState(false)
   const supabase = getSupabaseBrowserClient();
   const router = useRouter();
+  const canCreateEvents = mockUser.organizer_status === "approved";
+
   useEffect(() => {
     const {
       data: { subscription },
@@ -101,6 +112,16 @@ export function AppSidebar() {
                           <a href="/events/trending">Trending</a>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
+                      {canCreateEvents && (
+                        <SidebarMenuSubItem>
+                          <SidebarMenuSubButton asChild>
+                            <a href="/events/create" className="text-blue-600 font-medium">
+                              <Plus className="size-4" />
+                              Create Event
+                            </a>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      )}
                     </SidebarMenuSub>
                   </CollapsibleContent>
                 </SidebarMenuItem>
@@ -179,6 +200,22 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+        {mockUser.organizer_status !== "none" && (
+          <SidebarGroup>
+            <SidebarGroupContent>
+              <div className="px-2 py-1">
+                <Badge
+                  variant={mockUser.organizer_status === "approved" ? "default" : "secondary"}
+                  className="w-full justify-center"
+                >
+                  {mockUser.organizer_status === "approved" && "✓ Verified Organizer"}
+                  {mockUser.organizer_status === "pending" && "⏳ Pending Review"}
+                  {mockUser.organizer_status === "rejected" && "❌ Application Rejected"}
+                </Badge>
+              </div>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
       </SidebarContent>
 
       <SidebarFooter className="p-4">

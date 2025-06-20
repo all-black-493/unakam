@@ -96,7 +96,10 @@ export default function EventsPage() {
           >
             {events?.map((event) => (
               <motion.div key={event.id} variants={itemVariants}>
-                <EventCard {...event} />
+                <EventCard 
+                {...event}
+                description={event.description ?? "No description available."}
+                />
               </motion.div>
             ))}
           </motion.div>
