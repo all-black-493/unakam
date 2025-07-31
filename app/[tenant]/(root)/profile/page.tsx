@@ -90,7 +90,7 @@ const Profile = () => {
   };
 
   const removeInterest = (interest: string) => {
-    setValue('interests', watchedInterests.filter(i => i !== interest));
+    setValue('interests', watchedInterests.filter((i: string) => i !== interest));
   };
 
   const onSubmit = (data: UpdateProfileInput) => {
@@ -280,7 +280,7 @@ const Profile = () => {
               <div>
                 <Label>Interests</Label>
                 <div className="mt-2 flex flex-wrap gap-2">
-                  {watchedInterests.map((interest, index) => (
+                  {watchedInterests.map((interest: string, index: number) => (
                     <Badge key={index} variant="secondary" className="text-sm">
                       {interest}
                       {isEditing && (

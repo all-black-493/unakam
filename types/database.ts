@@ -1,3 +1,22 @@
+import { z } from "zod";
+
+export const UpdateProfileSchema = z.object({
+  bio: z.string().max(300, "Bio must be under 300 characters").optional(),
+  location: z.string().max(100, "Location must be under 100 characters").optional(),
+  phone: z.string().max(20, "Phone number must be under 20 characters").optional(),
+  date_of_birth: z.string().optional(), 
+  interests: z.array(z.string()).optional(),
+  photo: z
+    .custom<File>()
+    .optional()
+    .refine((file) => file instanceof File || typeof file === 'undefined', {
+      message: "Invalid file format",
+    }),
+});
+
+export type UpdateProfileInput = z.infer<typeof UpdateProfileSchema>;
+
+
 export interface Tenant {
   id: string;
   name: string;

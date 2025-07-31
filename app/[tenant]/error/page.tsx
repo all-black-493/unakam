@@ -1,10 +1,8 @@
 import Link from "next/link";
 interface ErrorPageProps {
-    searchParams: {
-        type?: string;
-        [key: string]: string | undefined;
-    };
+    searchParams: Record<string, string | undefined>;
 }
+
 
 export default function ErrorPage({ searchParams }: ErrorPageProps) {
     const { type } = searchParams;
