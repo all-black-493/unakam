@@ -32,11 +32,7 @@ export const getSupabaseReqResClient = async ({request}: {request: Request}) => 
                         console.error(error);
                     }
                 },
-                removeAll(){
-                    cookieStore.getAll().forEach((cookie) => {
-                        cookieStore.delete(cookie.name)
-                    })
-                }
+                
             }
         }
     );
