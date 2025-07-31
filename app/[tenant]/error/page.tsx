@@ -4,7 +4,7 @@ interface ErrorPageProps {
 }
 
 
-export default function ErrorPage({ searchParams }: ErrorPageProps) {
+export default async function ErrorPage({ searchParams }: ErrorPageProps) {
     const { type } = searchParams;
     const knownErrors = ["login-failed", "missing-email", "invalid-email", "magic-link", "invalid-magic-link"];
     return (
