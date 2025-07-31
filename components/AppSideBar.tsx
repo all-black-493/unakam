@@ -37,11 +37,18 @@ import { getSupabaseBrowserClient } from "@/supabase-utils/browserClient";
 import { useEffect } from "react";
 import { useRouter } from 'next/navigation';
 
-const mockUser = {
+type OrganizerStatus = "approved" | "pending" | "rejected" | "none";
+
+const mockUser: {
+  name: string;
+  email: string;
+  avatar: string;
+  organizer_status: OrganizerStatus;
+} = {
   name: "John Doe",
   email: "john@example.com",
   avatar: "https://github.com/shadcn.png",
-  organizer_status: "approved" as const,
+  organizer_status: "approved",
 }
 
 const data = {

@@ -15,7 +15,6 @@ const fetchProfile = async (): Promise<Profile | null> => {
   const mockProfile: Profile = {
     id: "550e8400-e29b-41d4-a716-446655440010",
     user_id: "550e8400-e29b-41d4-a716-446655440001",
-    tenant_id: "550e8400-e29b-41d4-a716-446655440000",
     bio: "Event enthusiast and music lover",
     location: "New York, NY",
     phone: "+1-234-567-8900",
@@ -38,7 +37,6 @@ const updateProfile = async (data: UpdateProfileInput): Promise<Profile> => {
   const updatedProfile: Profile = {
     id: "550e8400-e29b-41d4-a716-446655440010",
     user_id: "550e8400-e29b-41d4-a716-446655440001",
-    tenant_id: "550e8400-e29b-41d4-a716-446655440000",
     bio: data.bio || "Event enthusiast and music lover",
     location: data.location || "New York, NY",
     phone: data.phone || "+1-234-567-8900",

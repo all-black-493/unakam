@@ -17,7 +17,6 @@ interface EventCardProps {
   date: string;
   time: string;
   location: string;
-  organizer_name: string;
   description: string;
   image_url: string;
   vip_tickets: number;
@@ -35,7 +34,6 @@ const EventCard: React.FC<EventCardProps> = ({
   date,
   time,
   location,
-  organizer_name,
   description,
   image_url,
   vip_tickets,
@@ -148,7 +146,7 @@ const EventCard: React.FC<EventCardProps> = ({
 
           <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
             <User className="w-4 h-4 text-purple-500" />
-            <span className="text-sm font-medium">{organizer_name}</span>
+            {/* <span className="text-sm font-medium">{organizer_name}</span> */}
           </div>
         </div>
 

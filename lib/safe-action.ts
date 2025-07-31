@@ -1,7 +1,6 @@
 import { createSafeActionClient } from "next-safe-action";
 import { z } from "zod";
 
-// Mock authentication - in real app, this would check JWT/session
 const getCurrentUser = () => ({
   id: "550e8400-e29b-41d4-a716-446655440001",
   email: "user@example.com",
@@ -63,8 +62,7 @@ export const organizerActionClient = tenantActionClient.use(async ({ next, ctx }
 });
 
 export const adminActionClient = tenantActionClient.use(async ({ next, ctx }) => {
-  // Mock admin check - in real app, check tenant membership role
-  const userRole = "owner"; // This would be fetched from tenant_members table
+  const userRole = "owner"; 
   
   if (userRole !== "owner" && userRole !== "admin") {
     throw new Error("Admin access required");
