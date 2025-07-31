@@ -6,16 +6,21 @@ export default async function middleware(request: NextRequest) {
     const session = await supabase.auth.getUser();
     const requestedPath = request.nextUrl.pathname;
     const sessionUser = session.data.user;
+    const [tenant, ...restOfPath] = requestedPath.substr(1).split("/");
 
-    if (requestedPath.includes("/events")) {
-        if(!sessionUser) {
-            return NextResponse.redirect(new URL("/sign-in", request.url));
-        }
+    if (!/[a-z0-9-_]+/.test(tenant)) {
+        return NextResponse.rewrite(new URL("/not-found", request.url));
     }
 
-    if (requestedPath === "/") {
-        if(sessionUser){
-            return NextResponse.redirect(new URL("/events", request.url));
+    const applicationPath = "/" + restOfPath.join("/");
+
+    if (applicationPath.startsWith("/events")) {
+        if (!sessionUser) {
+            return NextResponse.redirect(new URL(`/${tenant}/sign-in`, request.url));
+        }
+    } else if (applicationPath === "/") {
+        if (sessionUser) {
+            return NextResponse.redirect(new URL(`/${tenant}/events`, request.url));
         }
     }
 
